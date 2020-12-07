@@ -26,31 +26,29 @@ function parseInput(input)
         )
     end
 
-    filter(rule -> !isnothing(rule), rules)
+    return map(rule -> rule.bag => rule.contains, rules) |> Dict
 end
 
 function canContainShinyGold(rules, bag)
     if (!haskey(rules, bag))
         return false
     end
+    # @show rules[bag]
 
-    if "shiny gold" in rules[bag]
+    if "shiny gold" in last.(rules[bag])
         return true
     end
 
-    return any(bag -> canContainShinyGold(rules, bag), rules[bag])
+    return any(bag -> canContainShinyGold(rules, last(bag)), rules[bag])
 end
 
 
 function solvePart1(input)
     rules = parseInput(input)
-    bagRules = map(rules) do rule
-        rule.bag => map(contain -> isnothing(contain) ? nothing : contain[2], rule.contains)
-    end |> Dict
 
     return count(
-        ((bag, contains),) -> canContainShinyGold(bagRules, bag),
-        bagRules
+        ((bag, contains),) -> canContainShinyGold(rules, bag),
+        rules
     )
 end
 
@@ -70,12 +68,7 @@ end
 
 function solvePart2(input)
     rules = parseInput(input)
-    bagRules = map(
-        rule -> rule.bag => map(contain -> contain, rule.contains),
-        rules
-    ) |> Dict
-
-    amountOfBagsIn(bagRules, "shiny gold")
+    amountOfBagsIn(rules, "shiny gold")
 end
 
 @testset "Day 7" begin

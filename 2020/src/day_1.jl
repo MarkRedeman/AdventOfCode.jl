@@ -7,18 +7,20 @@ function input()
 end
 
 function solveForProduct(product)
-    solution = Iterators.filter(ns -> sum(ns) == 2020, product)
-    prod(first(solution))
+    solution = Iterators.filter(
+        ns -> sum(ns) == 2020,
+        product
+    ) |> first
+
+    prod(solution)
 end
 
-function solvePart1(input)
-    numbers = input
+function solvePart1(numbers)
     product = Iterators.product(numbers, numbers)
     solveForProduct(product)
 end
 
-function solvePart2(input)
-    numbers = input
+function solvePart2(numbers)
     product = Iterators.product(numbers, numbers, numbers)
     solveForProduct(product)
 end

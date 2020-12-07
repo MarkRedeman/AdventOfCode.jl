@@ -102,9 +102,7 @@ isValidHcl(hcl) = occursin(r"\#[0-9a-f]{6}", hcl)
 function isValidPid(pid)
     try
         pidi = parse(Int, pid)
-        # @show pidi, length(p["pid"]), p["pid"]
         if (length(pid) != 9)
-            # @show p["pid"]
             return false
         end
     catch e

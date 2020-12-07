@@ -3,32 +3,29 @@ using AdventOfCode
 
 function input()
     io = open("2020/data/day_6.txt", "r")
-    return parseInput(read(io, String))
+    return read(io, String)
 end
 
 function parseInput(input)
-    inputs = split(input, "\n\n")
-    x = map(s -> filter(ss -> ss != "", split(s, '\n')), inputs)
-    x = map(s -> split(s, '\n', keepempty = false), inputs)
+    groups = split(input, "\n\n")
+    return map(group -> split(group, '\n', keepempty = false), groups)
 end
 
 function solvePart1(input)
-    map(
+    sum(
         answers -> string(answers...) |> unique |> length,
         input
-    ) |> sum
+    )
 end
 
 function solvePart2(input)
-    map(input) do answers
-        allQuestions = string(answers...) |> unique
-        filter(allQuestions) do question
-            all(questions -> question in questions, answers)
-        end |> length
-    end |> sum
+    return sum(
+        answers -> intersect(answers...) |> length,
+        input
+    )
 end
 
 @testset "Day 6" begin
-    @test(solvePart1(input()) == 7128)
-    @test(solvePart2(input()) == 3640)
+    @test(solvePart1(parseInput(input())) == 7128)
+    @test(solvePart2(parseInput(input())) == 3640)
 end

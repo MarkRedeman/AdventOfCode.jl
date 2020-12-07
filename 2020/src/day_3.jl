@@ -10,8 +10,8 @@ function treesHitUsingSlope(A, slope)
     position = [1, 1]
     trees = 0
     while (position[1] < size(A, 1))
-        position += slope
-        position[2] = mod1(position[2], size(A, 2))
+        position[1] = position[1] + slope[1]
+        position[2] = mod1(position[2] + slope[2], size(A, 2))
 
         if (A[position[1], position[2]] == '#')
             trees += 1
@@ -21,13 +21,12 @@ function treesHitUsingSlope(A, slope)
     return trees
 end
 
-function solvePart1(input)
-    return treesHitUsingSlope(input, [1, 3])
+function solvePart1(A)
+    return treesHitUsingSlope(A, [1, 3])
 end
 
-function solvePart2(input)
+function solvePart2(A)
     slopes = [[1, 1], [1, 3], [1, 5], [1, 7], [2, 1]]
-    A = input
     return prod(slope -> treesHitUsingSlope(A, slope), slopes)
 end
 

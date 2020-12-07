@@ -17,7 +17,7 @@ end
 function isValidPart1(s)
     range, char, password = parsePassword(s)
 
-    return count(==(char), password) ∈ range
+    return count(==(char), password) in range
 end
 
 solvePart1(input) = count(isValidPart1, input)
@@ -25,7 +25,10 @@ solvePart1(input) = count(isValidPart1, input)
 function isValidPart2(s)
     range, char, password = parsePassword(s)
 
-    return xor(password[range.start] == char, password[range.stop] == char)
+    return xor(
+        password[range.start] == char,
+        password[range.stop] == char
+    )
 end
 
 solvePart2(input) = count(isValidPart2, input)
