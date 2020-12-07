@@ -3,6 +3,15 @@ uuid = "0df3af92-08f9-4d8d-82f1-b24f6257c89c"
 authors = ["Mark Redeman <markredeman@gmail.com> and contributors"]
 version = "0.1.0"
 
+[deps]
+AdventOfCode = "7ef4cfdd-3fec-4d8b-b242-bcc5161d01d5"
+Graphs = "86223c79-3864-5bf0-83f7-82e725a168b6"
+IterTools = "c8e1da08-722c-5040-9ed9-7db0dc04731e"
+LightGraphs = "093fc24a-ae57-5d10-9952-331d41423f4d"
+Memoize = "c03570c3-d221-55d1-a50c-7939bbd78826"
+Mods = "7475f97c-0381-53b1-977b-4c60186c8d62"
+OffsetArrays = "6fe1bfb0-de20-5000-8ca7-80f57d26f881"
+
 [compat]
 julia = "1"
 
