@@ -1,5 +1,4 @@
-# https://adventofcode.com/2020/day/8
-using AdventOfCode
+using Test
 
 function input()
     io = open("2020/data/day_8.txt", "r")
@@ -11,26 +10,37 @@ function parseInput(input)
     return (m.captures[1], parse(Int, m.captures[2]))
 end
 
+struct InfiniteLoopDetected <: Exception
+    location::Int
+    accumulator::Int
+end
+
+function runInstruction(instruction, state)
+    (operation, argument) = instruction
+    (loc, acc) = state
+
+    if (operation == "nop")
+        return (loc + 1, acc)
+    elseif (operation == "acc")
+        return (loc + 1, acc + argument)
+    elseif (operation == "jmp")
+        return (loc + argument, acc)
+    end
+
+    throw(ArgumentError("Got an unkown operation: $operation"))
+end
+
 function runInstructions(instructions)
     acc = 0
     loc = 1
     visited = [];
     while (loc <= length(instructions))
         if loc in visited
-            throw(acc)
+            throw(InfiniteLoopDetected(loc, acc))
         end
 
         push!(visited, loc)
-        (operation, argument) = instructions[loc]
-        if (operation == "nop")
-        elseif (operation == "acc")
-            acc += argument
-        elseif (operation == "jmp")
-            loc += argument
-            continue
-        end
-
-        loc += 1
+        (loc, acc) = runInstruction(instructions[loc], (loc, acc))
     end
     return acc
 end
@@ -38,33 +48,52 @@ end
 function solvePart1(input)
     instructions = map(parseInput, input)
     try
-    runInstructions(instructions)
+        runInstructions(instructions)
     catch e
-        return e
+        if (typeof(e) == InfiniteLoopDetected)
+            return e.accumulator
+        end
+        throw(e)
     end
+end
+
+function repairBootCode!(instructions, errorLocation)
+    (operation, argument) = instructions[errorLocation]
+
+    if (operation ∉ ["jmp", "nop"])
+        return false
+    end
+
+    if (operation == "nop")
+        instructions[errorLocation] = ("jmp", argument)
+    elseif (operation == "jmp")
+        instructions[errorLocation] = ("nop", argument)
+    end
+    return true
 end
 
 function solvePart2(input)
     instructions = map(parseInput, input)
     for errorLocation = 1:length(instructions)
-        instructions = map(parseInput, input)
-        try
-            if (instructions[errorLocation][1] == "nop")
-                instructions[errorLocation] = ("jmp", instructions[errorLocation][2])
-            elseif (instructions[errorLocation][1] == "jmp")
-                instructions[errorLocation] = ("nop", instructions[errorLocation][2])
-            end
+        if (repairBootCode!(instructions, errorLocation) == false)
+            continue
+        end
 
+        try
             return runInstructions(instructions)
         catch e
-            continue
+            if (typeof(e) == InfiniteLoopDetected)
+                repairBootCode!(instructions, errorLocation)
+                continue
+            end
+            throw(e)
         end
     end
     return nothing
 end
 
 @testset "Day 8" begin
-    TEST = """
+    TEST = split("""
 nop +0
 acc +1
 jmp +4
@@ -74,8 +103,8 @@ acc -99
 acc +1
 jmp -4
 acc +6
-"""
-    TEST = split(TEST, '\n', keepempty=false)
+""", '\n', keepempty=false)
+
     @test(parseInput("nop +0") == ("nop", 0))
     @test(parseInput("acc +4") == ("acc", 4))
     @test(parseInput("jmp -4") == ("jmp", -4))
