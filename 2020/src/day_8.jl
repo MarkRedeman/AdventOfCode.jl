@@ -11,14 +11,13 @@ function parseInput(input)
     return (m.captures[1], parse(Int, m.captures[2]))
 end
 
-function solvePart1(input)
-    instructions = map(parseInput, input)
+function runInstructions(instructions)
     acc = 0
     loc = 1
     visited = [];
-    while (true)
+    while (loc <= length(instructions))
         if loc in visited
-            return acc
+            throw(acc)
         end
 
         push!(visited, loc)
@@ -33,11 +32,35 @@ function solvePart1(input)
 
         loc += 1
     end
-    return 5
+    return acc
+end
+
+function solvePart1(input)
+    instructions = map(parseInput, input)
+    try
+    runInstructions(instructions)
+    catch e
+        return e
+    end
 end
 
 function solvePart2(input)
-    1
+    instructions = map(parseInput, input)
+    for errorLocation = 1:length(instructions)
+        instructions = map(parseInput, input)
+        try
+            if (instructions[errorLocation][1] == "nop")
+                instructions[errorLocation] = ("jmp", instructions[errorLocation][2])
+            elseif (instructions[errorLocation][1] == "jmp")
+                instructions[errorLocation] = ("nop", instructions[errorLocation][2])
+            end
+
+            return runInstructions(instructions)
+        catch e
+            continue
+        end
+    end
+    return nothing
 end
 
 @testset "Day 8" begin
@@ -52,11 +75,13 @@ acc +1
 jmp -4
 acc +6
 """
+    TEST = split(TEST, '\n', keepempty=false)
     @test(parseInput("nop +0") == ("nop", 0))
     @test(parseInput("acc +4") == ("acc", 4))
     @test(parseInput("jmp -4") == ("jmp", -4))
-    @test(solvePart1(split(TEST, '\n', keepempty=false)) == 5)
-
+    @test(solvePart1(TEST) == 5)
     @test(solvePart1(input()) == 1586)
-    @test_broken(solvePart2(input()) == nothing)
+
+    @test(solvePart2(TEST) == 8)
+    @test(solvePart2(input()) == 703)
 end
