@@ -10,19 +10,16 @@ function parseInput(input)
     parse.(Int, input)
 end
 
-
 function solvePart1(input, preambleSize)
     numbers = map(parseInput, input)
+    windows = Iterators.zip([Iterators.drop(numbers, n) for n = 0:preambleSize]...)
+    for iterators in windows
+        preamble, n = iterators[1:end-1], iterators[end]
 
-    for idx = (preambleSize + 1):length(input)
-        preamble = numbers[idx - preambleSize : idx - 1]
-
-        if (! (numbers[idx] in map(sum, combinations(preamble, 2))))
-            return numbers[idx]
+        if (n ∉ map(sum, combinations(preamble, 2)))
+            return n
         end
     end
-
-    nothing
 end
 
 function solvePart2(input, target)
