@@ -10,20 +10,18 @@ function parseInput(input)
     parse.(Int, input)
 end
 
-function findInvalidXmas(numbers, preambleSize)
-    for idx = preambleSize + 1 : length(numbers)
-        n = numbers[idx]
-        preamble = @view numbers[idx - preambleSize:idx - 1]
+function findInvalidXmas(numbers, preambleSize, idx)
+    n = numbers[idx]
+    preamble = @view numbers[idx - preambleSize:idx - 1]
 
-        if (n ∉ map(sum, combinations(preamble, 2)))
-            return n
-        end
-    end
+    n in map(sum, combinations(preamble, 2)) ?
+        findInvalidXmas(numbers, preambleSize, idx + 1) :
+        n
 end
 
 function solvePart1(input, preambleSize)
     numbers = map(parseInput, input)
-    findInvalidXmas(numbers, preambleSize)
+    findInvalidXmas(numbers, preambleSize, preambleSize + 1)
 end
 
 function findWeakness(numbers, target, left, right)
