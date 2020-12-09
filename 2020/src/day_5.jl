@@ -1,7 +1,8 @@
-using Test;
+using AdventOfCodeSolutions
+using Test
 
-function input()
-    io = open("2020/data/day_5.txt", "r")
+function input(puzzle::Puzzle{5, n}) where n
+    io = openInput(puzzle)
     split(read(io, String), "\n", keepempty=false)
 end
 
@@ -19,7 +20,7 @@ seatId(str::AbstractString) = seatId(decode(str)...)
 seatId(row, column) = 8 * row + column
 seatId(seat) = seatId(seat...)
 
-solvePart1(input) = max(seatId.(input)...)
+solve(::Puzzle{5, 1}, input) = max(seatId.(input)...)
 
 
 notVeryFrontOrBack((row, column),) = row != 0 && row != 127
@@ -27,7 +28,7 @@ hasGap((left, right),) = left == right - 2
 
 AdjacentElements(c) = Iterators.zip(c, Iterators.drop(c, 1))
 
-function solvePart2(input)
+function solve(::Puzzle{5, 2}, input)
     seats = decode.(input)
     takenSeats = seatId.(filter(notVeryFrontOrBack, seats)) |> sort
 
@@ -39,6 +40,6 @@ end
     @test(seatId("BFFFBBFRRR") == 567)
     @test(seatId("FFFBBBFRRR") == 119)
     @test(seatId("BBFFBBFRLL") == 820)
-    @test(solvePart1(input()) == 894)
-    @test(solvePart2(input()) == 579)
+    @test(solve(Puzzle(5, 1), input(Puzzle(5, 1))) == 894)
+    @test(solve(Puzzle(5, 2), input(Puzzle(5, 2))) == 579)
 end

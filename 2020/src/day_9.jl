@@ -1,8 +1,9 @@
+using AdventOfCodeSolutions
 using Combinatorics
 using Test
 
-function input()
-    io = open("2020/data/day_9.txt", "r")
+function input(puzzle::Puzzle{9, n}) where n
+    io = openInput(puzzle)
     split(read(io, String), "\n", keepempty=false)
 end
 
@@ -19,7 +20,7 @@ function findInvalidXmas(numbers, preambleSize, idx)
         n
 end
 
-function solvePart1(input, preambleSize)
+function solve(::Puzzle{9, 1}, input, preambleSize)
     numbers = map(parseInput, input)
     findInvalidXmas(numbers, preambleSize, preambleSize + 1)
 end
@@ -36,7 +37,7 @@ function findWeakness(numbers, target, left, right)
     end
 end
 
-function solvePart2(input, target)
+function solve(::Puzzle{9, 2}, input, target)
     numbers = map(parseInput, input)
     return findWeakness(numbers, target, 1, 2)
 end
@@ -65,9 +66,10 @@ end
 576
 """, '\n', keepempty=false)
 
-    @test(solvePart1(TEST, 5) == 127)
-    @test(solvePart1(input(), 25) == 10884537)
+    @test(solve(Puzzle(9, 1), TEST, 5) == 127)
+    @test(solve(Puzzle(9, 1), input(Puzzle(9, 1)), 25) == 10884537)
 
-    @test(solvePart2(TEST, 127) == 62)
-    @test(solvePart2(input(), 10884537) == 1261309)
+    @test(solve(Puzzle(9, 2), TEST, 127) == 62)
+    @test(solve(Puzzle(9, 2), input(Puzzle(9, 2)), 10884537) == 1261309)
 end
+

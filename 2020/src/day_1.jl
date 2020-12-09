@@ -1,7 +1,8 @@
+using AdventOfCodeSolutions
 using Test
 
-function input()
-    io = open("2020/data/day_1.txt", "r")
+function input(puzzle::Puzzle{1, n}) where n
+    io = openInput(puzzle)
     inputs = split(read(io, String), '\n', keepempty=false)
     return parse.(Int, inputs)
 end
@@ -15,17 +16,17 @@ function solveForProduct(product)
     prod(solution)
 end
 
-function solvePart1(numbers)
+function solve(::Puzzle{1, 1}, numbers)
     product = Iterators.product(numbers, numbers)
     solveForProduct(product)
 end
 
-function solvePart2(numbers)
+function solve(::Puzzle{1, 2}, numbers)
     product = Iterators.product(numbers, numbers, numbers)
     solveForProduct(product)
 end
 
 @testset "Day 1" begin
-    @test(solvePart1(input()) == 73371)
-    @test(solvePart2(input()) == 127642310)
+    @test(solve(Puzzle(1, 1), input(Puzzle(1, 1))) == 73371)
+    @test(solve(Puzzle(1, 2), input(Puzzle(1, 2))) == 127642310)
 end

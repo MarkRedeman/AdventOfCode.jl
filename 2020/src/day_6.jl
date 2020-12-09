@@ -1,8 +1,8 @@
-# https://adventofcode.com/2020/day/6
-using AdventOfCode
+using AdventOfCodeSolutions
+using Test
 
-function input()
-    io = open("2020/data/day_6.txt", "r")
+function input(puzzle::Puzzle{6, n}) where n
+    io = openInput(puzzle)
     return read(io, String)
 end
 
@@ -11,14 +11,14 @@ function parseInput(input)
     return map(group -> split(group, '\n', keepempty = false), groups)
 end
 
-function solvePart1(input)
+function solve(::Puzzle{6, 1}, input)
     sum(
         answers -> string(answers...) |> unique |> length,
         input
     )
 end
 
-function solvePart2(input)
+function solve(::Puzzle{6, 2}, input)
     return sum(
         answers -> intersect(answers...) |> length,
         input
@@ -26,6 +26,6 @@ function solvePart2(input)
 end
 
 @testset "Day 6" begin
-    @test(solvePart1(parseInput(input())) == 7128)
-    @test(solvePart2(parseInput(input())) == 3640)
+    @test(solve(Puzzle(6, 1), parseInput(input(Puzzle(6, 1)))) == 7128)
+    @test(solve(Puzzle(6, 2), parseInput(input(Puzzle(6, 2)))) == 3640)
 end

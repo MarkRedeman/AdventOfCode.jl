@@ -1,9 +1,8 @@
-# https://adventofcode.com/2020/day/2
-using AdventOfCode
+using AdventOfCodeSolutions
 using Test
 
-function input()
-    io = open("2020/data/day_2.txt", "r")
+function input(puzzle::Puzzle{2, n}) where n
+    io = openInput(puzzle)
     return split(read(io, String), '\n', keepempty=false)
 end
 
@@ -20,7 +19,7 @@ function isValidPart1(s)
     return count(==(char), password) in range
 end
 
-solvePart1(input) = count(isValidPart1, input)
+solve(::Puzzle{2, 1}, input) = count(isValidPart1, input)
 
 function isValidPart2(s)
     range, char, password = parsePassword(s)
@@ -31,9 +30,9 @@ function isValidPart2(s)
     )
 end
 
-solvePart2(input) = count(isValidPart2, input)
+solve(::Puzzle{2, 2}, input) = count(isValidPart2, input)
 
 @testset "Day 2" begin
-    @test(solvePart1(input()) == 556)
-    @test(solvePart2(input()) == 605)
+    @test(solve(Puzzle(2, 1), input(Puzzle(2, 1))) == 556)
+    @test(solve(Puzzle(2, 2), input(Puzzle(2, 2))) == 605)
 end

@@ -1,7 +1,8 @@
+using AdventOfCodeSolutions
 using Test
 
-function input()
-    io = open("2020/data/day_8.txt", "r")
+function input(puzzle::Puzzle{8, n}) where n
+    io = openInput(puzzle)
     split(read(io, String), "\n", keepempty=false)
 end
 
@@ -52,7 +53,7 @@ function runInstructions(instructions)
     return state.acc
 end
 
-function solvePart1(input)
+function solve(::Puzzle{8, 1}, input)
     instructions = map(parseInput, input)
     try
         runInstructions(instructions)
@@ -85,7 +86,7 @@ function repairBootCode!(instructions, errorLocation)
     return true
 end
 
-function solvePart2(input)
+function solve(::Puzzle{8, 2}, input)
     instructions = map(parseInput, input)
     for errorLocation = 1:length(instructions)
         if (repairBootCode!(instructions, errorLocation) == false)
@@ -121,9 +122,9 @@ acc +6
     @test(parseInput("nop +0") == (operation = "nop", argument = 0))
     @test(parseInput("acc +4") == (operation = "acc", argument = 4))
     @test(parseInput("jmp -4") == (operation = "jmp", argument = -4))
-    @test(solvePart1(TEST) == 5)
-    @test(solvePart1(input()) == 1586)
+    @test(solve(Puzzle(8, 1), TEST) == 5)
+    @test(solve(Puzzle(8, 1), input(Puzzle(8, 1))) == 1586)
 
-    @test(solvePart2(TEST) == 8)
-    @test(solvePart2(input()) == 703)
+    @test(solve(Puzzle(8, 2), TEST) == 8)
+    @test(solve(Puzzle(8, 2), input(Puzzle(8, 2))) == 703)
 end

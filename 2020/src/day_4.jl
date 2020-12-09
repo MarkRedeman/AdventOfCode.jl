@@ -1,5 +1,8 @@
-function input()
-    io = open("2020/data/day_4.txt", "r")
+using AdventOfCodeSolutions
+using Test
+
+function input(puzzle::Puzzle{4, n}) where n
+    io = openInput(puzzle)
     passports = split(read(io, String), "\n\n", keepempty=false)
     # Map passports to an array of fields where each field is given by a type and value
     map(passport -> split.(split(passport, r"\n| ", keepempty=false), ':'), passports)
@@ -20,7 +23,7 @@ function passpordIsValid1(passpord)
     return length(filter(x -> x[1] != "cid", passpord)) == 7
 end
 
-function solvePart1(input)
+function solve(::Puzzle{4, 1}, input)
     credentials = input
     return filter(passpordIsValid1, credentials) |> length
 end
@@ -111,12 +114,12 @@ function isValidPid(pid)
     return true
 end
 
-function solvePart2(input)
+function solve(::Puzzle{4, 2}, input)
     credentials = input
     return  filter(passpordIsValid2, credentials) |> length
 end
 
 @testset "Day 4" begin
-    @test(solvePart1(input()) == 242)
-    @test(solvePart2(input()) == 186)
+    @test(solve(Puzzle(4, 1), input(Puzzle(4, 1))) == 242)
+    @test(solve(Puzzle(4, 2), input(Puzzle(4, 2))) == 186)
 end

@@ -1,8 +1,8 @@
-# https://adventofcode.com/2020/day/7
-using AdventOfCode
+using AdventOfCodeSolutions
+using Test
 
-function input()
-    io = open("2020/data/day_7.txt", "r")
+function input(puzzle::Puzzle{7, n}) where n
+    io = openInput(puzzle)
     split(read(io, String), "\n", keepempty=false)
 end
 
@@ -43,7 +43,7 @@ function canContainShinyGold(rules, bag)
 end
 
 
-function solvePart1(input)
+function solve(::Puzzle{7, 1}, input)
     rules = parseInput(input)
 
     return count(
@@ -66,7 +66,7 @@ function amountOfBagsIn(rules, bag)
     ) |> sum
 end
 
-function solvePart2(input)
+function solve(::Puzzle{7, 2}, input)
     rules = parseInput(input)
     amountOfBagsIn(rules, "shiny gold")
 end
@@ -83,8 +83,8 @@ vibrant plum bags contain 5 faded blue bags, 6 dotted black bags.
 faded blue bags contain no other bags.
 dotted black bags contain no other bags.
 """, '\n', keepempty=false)
-    @test(solvePart1(TEST_INPUT) == 4)
-    @test(solvePart1(input()) == 144)
+    @test(solve(Puzzle(7, 1), TEST_INPUT) == 4)
+    @test(solve(Puzzle(7, 1), input(Puzzle(7, 1))) == 144)
 
 TEST_INPUT_2 = split("""
 shiny gold bags contain 2 dark red bags.
@@ -95,6 +95,6 @@ dark green bags contain 2 dark blue bags.
 dark blue bags contain 2 dark violet bags.
 dark violet bags contain no other bags.
 """, '\n', keepempty=false)
-    @test(solvePart2(TEST_INPUT_2) == 126)
-    @test(solvePart2(input()) == 5956)
+    @test(solve(Puzzle(7, 2), TEST_INPUT_2) == 126)
+    @test(solve(Puzzle(7, 2), input(Puzzle(7, 2))) == 5956)
 end
