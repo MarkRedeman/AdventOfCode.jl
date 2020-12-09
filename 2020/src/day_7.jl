@@ -1,7 +1,7 @@
 using AdventOfCodeSolutions
 using Test
 
-function input(puzzle::Puzzle{7, n}) where n
+function input(puzzle::Puzzle{2020, 7, n}) where n
     io = openInput(puzzle)
     split(read(io, String), "\n", keepempty=false)
 end
@@ -43,7 +43,7 @@ function canContainShinyGold(rules, bag)
 end
 
 
-function solve(::Puzzle{7, 1}, input)
+function solve(::Puzzle{2020, 7, 1}, input)
     rules = parseInput(input)
 
     return count(
@@ -66,7 +66,7 @@ function amountOfBagsIn(rules, bag)
     ) |> sum
 end
 
-function solve(::Puzzle{7, 2}, input)
+function solve(::Puzzle{2020, 7, 2}, input)
     rules = parseInput(input)
     amountOfBagsIn(rules, "shiny gold")
 end

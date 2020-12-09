@@ -1,7 +1,7 @@
 using AdventOfCodeSolutions
 using Test
 
-function input(puzzle::Puzzle{2, n}) where n
+function input(puzzle::Puzzle{2020, 2, n}) where n
     io = openInput(puzzle)
     return split(read(io, String), '\n', keepempty=false)
 end
@@ -19,7 +19,7 @@ function isValidPart1(s)
     return count(==(char), password) in range
 end
 
-solve(::Puzzle{2, 1}, input) = count(isValidPart1, input)
+solve(::Puzzle{2020, 2, 1}, input) = count(isValidPart1, input)
 
 function isValidPart2(s)
     range, char, password = parsePassword(s)
@@ -30,7 +30,7 @@ function isValidPart2(s)
     )
 end
 
-solve(::Puzzle{2, 2}, input) = count(isValidPart2, input)
+solve(::Puzzle{2020, 2, 2}, input) = count(isValidPart2, input)
 
 @testset "Day 2" begin
     @test(solve(Puzzle(2, 1), input(Puzzle(2, 1))) == 556)

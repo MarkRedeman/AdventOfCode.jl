@@ -1,7 +1,7 @@
 using AdventOfCodeSolutions
 using Test
 
-function input(puzzle::Puzzle{3, n}) where n
+function input(puzzle::Puzzle{2020, 3, n}) where n
     io = openInput(puzzle)
     A = split(read(io, String), '\n', keepempty=false)
     return permutedims(hcat(map(collect, A)...))
@@ -22,11 +22,11 @@ function treesHitUsingSlope(A, slope)
     return trees
 end
 
-function solve(::Puzzle{3, 1}, A)
+function solve(::Puzzle{2020, 3, 1}, A)
     return treesHitUsingSlope(A, [1, 3])
 end
 
-function solve(::Puzzle{3, 2}, A)
+function solve(::Puzzle{2020, 3, 2}, A)
     slopes = [[1, 1], [1, 3], [1, 5], [1, 7], [2, 1]]
     return prod(slope -> treesHitUsingSlope(A, slope), slopes)
 end

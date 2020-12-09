@@ -1,7 +1,7 @@
 using AdventOfCodeSolutions
 using Test
 
-function input(puzzle::Puzzle{5, n}) where n
+function input(puzzle::Puzzle{2020, 5, n}) where n
     io = openInput(puzzle)
     split(read(io, String), "\n", keepempty=false)
 end
@@ -20,7 +20,7 @@ seatId(str::AbstractString) = seatId(decode(str)...)
 seatId(row, column) = 8 * row + column
 seatId(seat) = seatId(seat...)
 
-solve(::Puzzle{5, 1}, input) = max(seatId.(input)...)
+solve(::Puzzle{2020, 5, 1}, input) = max(seatId.(input)...)
 
 
 notVeryFrontOrBack((row, column),) = row != 0 && row != 127
@@ -28,7 +28,7 @@ hasGap((left, right),) = left == right - 2
 
 AdjacentElements(c) = Iterators.zip(c, Iterators.drop(c, 1))
 
-function solve(::Puzzle{5, 2}, input)
+function solve(::Puzzle{2020, 5, 2}, input)
     seats = decode.(input)
     takenSeats = seatId.(filter(notVeryFrontOrBack, seats)) |> sort
 

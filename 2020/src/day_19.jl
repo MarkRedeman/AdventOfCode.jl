@@ -1,16 +1,16 @@
 using AdventOfCodeSolutions
 using Test
 
-function input(puzzle::Puzzle{19, n}) where n
+function input(puzzle::Puzzle{2020, 19, n}) where n
     io = openInput(puzzle)
     split(read(io, String), "\n", keepempty=false)
 end
 
-function solve(::Puzzle{19, 1}, inputt)
+function solve(::Puzzle{2020, 19, 1}, inputt)
     nothing
 end
 
-function solve(::Puzzle{19, 2}, inputt)
+function solve(::Puzzle{2020, 19, 2}, inputt)
     nothing
 end
 

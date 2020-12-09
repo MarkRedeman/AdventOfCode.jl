@@ -1,9 +1,10 @@
 module AdventOfCodeSolutions
 
-struct Puzzle{day, part} end
-Puzzle(day, part) = Puzzle{day, part}()
+struct Puzzle{year, day, part} end
+Puzzle(day, part) = Puzzle{2020, day, part}()
+Puzzle(year, day, part) = Puzzle{year, day, part}()
 
-function openInput(::Puzzle{d, p}) where {d, p}
+function openInput(::Puzzle{2020, d, p}) where {d, p}
     return open(joinpath(@__DIR__, "../2020/data/day_$d.txt"), "r")
 end
 

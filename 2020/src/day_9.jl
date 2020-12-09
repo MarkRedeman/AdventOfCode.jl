@@ -2,7 +2,7 @@ using AdventOfCodeSolutions
 using Combinatorics
 using Test
 
-function input(puzzle::Puzzle{9, n}) where n
+function input(puzzle::Puzzle{2020, 9, n}) where n
     io = openInput(puzzle)
     split(read(io, String), "\n", keepempty=false)
 end
@@ -20,7 +20,7 @@ function findInvalidXmas(numbers, preambleSize, idx)
         n
 end
 
-function solve(::Puzzle{9, 1}, input, preambleSize)
+function solve(::Puzzle{2020, 9, 1}, input, preambleSize)
     numbers = map(parseInput, input)
     findInvalidXmas(numbers, preambleSize, preambleSize + 1)
 end
@@ -37,7 +37,7 @@ function findWeakness(numbers, target, left, right)
     end
 end
 
-function solve(::Puzzle{9, 2}, input, target)
+function solve(::Puzzle{2020, 9, 2}, input, target)
     numbers = map(parseInput, input)
     return findWeakness(numbers, target, 1, 2)
 end

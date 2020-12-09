@@ -1,7 +1,7 @@
 using AdventOfCodeSolutions
 using Test
 
-function input(puzzle::Puzzle{6, n}) where n
+function input(puzzle::Puzzle{2020, 6, n}) where n
     io = openInput(puzzle)
     return read(io, String)
 end
@@ -11,14 +11,14 @@ function parseInput(input)
     return map(group -> split(group, '\n', keepempty = false), groups)
 end
 
-function solve(::Puzzle{6, 1}, input)
+function solve(::Puzzle{2020, 6, 1}, input)
     sum(
         answers -> string(answers...) |> unique |> length,
         input
     )
 end
 
-function solve(::Puzzle{6, 2}, input)
+function solve(::Puzzle{2020, 6, 2}, input)
     return sum(
         answers -> intersect(answers...) |> length,
         input

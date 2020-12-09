@@ -1,7 +1,7 @@
 using AdventOfCodeSolutions
 using Test
 
-function input(puzzle::Puzzle{4, n}) where n
+function input(puzzle::Puzzle{2020, 4, n}) where n
     io = openInput(puzzle)
     passports = split(read(io, String), "\n\n", keepempty=false)
     # Map passports to an array of fields where each field is given by a type and value
@@ -23,7 +23,7 @@ function passpordIsValid1(passpord)
     return length(filter(x -> x[1] != "cid", passpord)) == 7
 end
 
-function solve(::Puzzle{4, 1}, input)
+function solve(::Puzzle{2020, 4, 1}, input)
     credentials = input
     return filter(passpordIsValid1, credentials) |> length
 end
@@ -114,7 +114,7 @@ function isValidPid(pid)
     return true
 end
 
-function solve(::Puzzle{4, 2}, input)
+function solve(::Puzzle{2020, 4, 2}, input)
     credentials = input
     return  filter(passpordIsValid2, credentials) |> length
 end

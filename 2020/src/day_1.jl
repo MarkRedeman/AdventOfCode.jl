@@ -1,7 +1,7 @@
 using AdventOfCodeSolutions
 using Test
 
-function input(puzzle::Puzzle{1, n}) where n
+function input(puzzle::Puzzle{2020, 1, n}) where n
     io = openInput(puzzle)
     inputs = split(read(io, String), '\n', keepempty=false)
     return parse.(Int, inputs)
@@ -16,12 +16,12 @@ function solveForProduct(product)
     prod(solution)
 end
 
-function solve(::Puzzle{1, 1}, numbers)
+function solve(::Puzzle{2020, 1, 1}, numbers)
     product = Iterators.product(numbers, numbers)
     solveForProduct(product)
 end
 
-function solve(::Puzzle{1, 2}, numbers)
+function solve(::Puzzle{2020, 1, 2}, numbers)
     product = Iterators.product(numbers, numbers, numbers)
     solveForProduct(product)
 end

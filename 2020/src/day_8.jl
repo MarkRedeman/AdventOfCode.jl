@@ -1,7 +1,7 @@
 using AdventOfCodeSolutions
 using Test
 
-function input(puzzle::Puzzle{8, n}) where n
+function input(puzzle::Puzzle{2020, 8, n}) where n
     io = openInput(puzzle)
     split(read(io, String), "\n", keepempty=false)
 end
@@ -53,7 +53,7 @@ function runInstructions(instructions)
     return state.acc
 end
 
-function solve(::Puzzle{8, 1}, input)
+function solve(::Puzzle{2020, 8, 1}, input)
     instructions = map(parseInput, input)
     try
         runInstructions(instructions)
@@ -86,7 +86,7 @@ function repairBootCode!(instructions, errorLocation)
     return true
 end
 
-function solve(::Puzzle{8, 2}, input)
+function solve(::Puzzle{2020, 8, 2}, input)
     instructions = map(parseInput, input)
     for errorLocation = 1:length(instructions)
         if (repairBootCode!(instructions, errorLocation) == false)
