@@ -2,5 +2,5 @@ using AdventOfCodeSolutions
 using Test
 
 @testset "AdventOfCodeSolutions.jl" begin
-    # Write your tests here.
+    foreach(include, readdir("2020/src/", join=true))
 end
