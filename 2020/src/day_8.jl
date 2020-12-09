@@ -7,7 +7,8 @@ end
 
 function parseInput(input)
     m = match(r"^(nop|acc|jmp) (.\d+)$", input)
-    return (m.captures[1], parse(Int, m.captures[2]))
+    argument = parse(Int, m.captures[2])
+    return (operation = m.captures[1], argument )
 end
 
 struct InfiniteLoopDetected <: Exception
@@ -17,32 +18,38 @@ end
 
 function runInstruction(instruction, state)
     (operation, argument) = instruction
-    (loc, acc) = state
 
     if (operation == "nop")
-        return (loc + 1, acc)
+        return (loc = state.loc + 1, acc = state.acc)
     elseif (operation == "acc")
-        return (loc + 1, acc + argument)
+        return (loc = state.loc + 1, acc = state.acc + argument)
     elseif (operation == "jmp")
-        return (loc + argument, acc)
+        return (loc = state.loc + argument, acc = state.acc)
     end
 
     throw(ArgumentError("Got an unkown operation: $operation"))
 end
 
+function visitInstruction!(visited, state)
+    (loc, acc) = state
+    if loc in visited
+        throw(InfiniteLoopDetected(loc, acc))
+    else
+        push!(visited, loc)
+    end
+end
+
 function runInstructions(instructions)
     acc = 0
     loc = 1
+    state = (loc = loc, acc = acc)
     visited = [];
-    while (loc <= length(instructions))
-        if loc in visited
-            throw(InfiniteLoopDetected(loc, acc))
-        end
+    while (state.loc <= length(instructions))
+        visitInstruction!(visited, state)
 
-        push!(visited, loc)
-        (loc, acc) = runInstruction(instructions[loc], (loc, acc))
+        state = runInstruction(instructions[state.loc], state)
     end
-    return acc
+    return state.acc
 end
 
 function solvePart1(input)
@@ -57,18 +64,24 @@ function solvePart1(input)
     end
 end
 
-function repairBootCode!(instructions, errorLocation)
-    (operation, argument) = instructions[errorLocation]
+function switchOperation((operation, argument))
+    if (operation == "nop")
+        return (operation = "jmp", argument)
+    elseif (operation == "jmp")
+        return (operation = "nop", argument)
+    end
 
-    if (operation ∉ ["jmp", "nop"])
+    throw(ArgumentError("Got an unkown operation: $operation"))
+end
+
+function repairBootCode!(instructions, errorLocation)
+    instruction = instructions[errorLocation]
+
+    if (instruction[1] ∉ ["jmp", "nop"])
         return false
     end
 
-    if (operation == "nop")
-        instructions[errorLocation] = ("jmp", argument)
-    elseif (operation == "jmp")
-        instructions[errorLocation] = ("nop", argument)
-    end
+    instructions[errorLocation] = switchOperation(instruction)
     return true
 end
 
@@ -105,9 +118,9 @@ jmp -4
 acc +6
 """, '\n', keepempty=false)
 
-    @test(parseInput("nop +0") == ("nop", 0))
-    @test(parseInput("acc +4") == ("acc", 4))
-    @test(parseInput("jmp -4") == ("jmp", -4))
+    @test(parseInput("nop +0") == (operation = "nop", argument = 0))
+    @test(parseInput("acc +4") == (operation = "acc", argument = 4))
+    @test(parseInput("jmp -4") == (operation = "jmp", argument = -4))
     @test(solvePart1(TEST) == 5)
     @test(solvePart1(input()) == 1586)
 
