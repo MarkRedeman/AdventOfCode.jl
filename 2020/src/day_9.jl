@@ -10,11 +10,10 @@ function parseInput(input)
     parse.(Int, input)
 end
 
-function solvePart1(input, preambleSize)
-    numbers = map(parseInput, input)
-    windows = Iterators.zip([Iterators.drop(numbers, n) for n = 0:preambleSize]...)
-    for iterators in windows
-        preamble, n = iterators[1:end-1], iterators[end]
+function findInvalidXmas(numbers, preambleSize)
+    for idx = preambleSize + 1 : length(numbers)
+        n = numbers[idx]
+        preamble = @view numbers[idx - preambleSize:idx - 1]
 
         if (n ∉ map(sum, combinations(preamble, 2)))
             return n
@@ -22,24 +21,26 @@ function solvePart1(input, preambleSize)
     end
 end
 
+function solvePart1(input, preambleSize)
+    numbers = map(parseInput, input)
+    findInvalidXmas(numbers, preambleSize)
+end
+
+function findWeakness(numbers, target, left, right)
+    r = @view numbers[left:right]
+    s = sum(r)
+    if (s > target)
+        return findWeakness(numbers, target, left + 1, right)
+    elseif (s < target)
+        return findWeakness(numbers, target, left, right + 1)
+    else
+        return sum(extrema(r))
+    end
+end
+
 function solvePart2(input, target)
     numbers = map(parseInput, input)
-
-    for left = 1:length(numbers)
-        for right = left + 1 : length(numbers)
-            r = (numbers[left:right])
-            s = sum(r)
-            if (s > target)
-                break
-            end
-
-            if (s == target)
-                return min(r...) + max(r...)
-            end
-        end
-    end
-
-    return nothing
+    return findWeakness(numbers, target, 1, 2)
 end
 
 @testset "Day 9" begin
@@ -67,9 +68,8 @@ end
 """, '\n', keepempty=false)
 
     @test(solvePart1(TEST, 5) == 127)
-    # @test(solvePart1(input(), 25) == 10884537)
+    @test(solvePart1(input(), 25) == 10884537)
 
     @test(solvePart2(TEST, 127) == 62)
     @test(solvePart2(input(), 10884537) == 1261309)
-    # @test(solvePart2(input()) == 703)
 end
