@@ -15,9 +15,11 @@ function findInvalidXmas(numbers, preambleSize, idx)
     n = numbers[idx]
     preamble = @view numbers[idx - preambleSize:idx - 1]
 
-    n in map(sum, combinations(preamble, 2)) ?
-        findInvalidXmas(numbers, preambleSize, idx + 1) :
-        n
+    if (n in map(sum, combinations(preamble, 2)))
+        return findInvalidXmas(numbers, preambleSize, idx + 1)
+    end
+
+    return n
 end
 
 function solve(::Puzzle{2020, 9, 1}, input, preambleSize)
