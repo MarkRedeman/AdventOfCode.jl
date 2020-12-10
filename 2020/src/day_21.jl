@@ -6,11 +6,11 @@ function input(puzzle::Puzzle{2020, 21, n}) where n
     split(read(io, String), "\n", keepempty=false)
 end
 
-function solve(::Puzzle{2020, 21, 1}, inputt)
+function solve(::Puzzle{2020, 21, 1}, input)
     nothing
 end
 
-function solve(::Puzzle{2020, 21, 2}, inputt)
+function solve(::Puzzle{2020, 21, 2}, input)
     nothing
 end
 
