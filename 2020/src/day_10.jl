@@ -126,7 +126,7 @@ end
     TEST_INPUT_2 = """
 """
 
-    for p = 2:4
+    for p = 2:3
         @test(solve(Puzzle(10, p), ["1"]) == 1)
         @test(solve(Puzzle(10, p), ["1", "2"]) == 2)
         @test(solve(Puzzle(10, p), ["1", "2", "3"]) == 4)
